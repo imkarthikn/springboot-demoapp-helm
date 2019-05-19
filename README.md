@@ -1,4 +1,4 @@
-# Treasure Hunt
+# Helm Demo app
 
 ## Aims
 
