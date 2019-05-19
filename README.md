@@ -2,36 +2,42 @@
 
 ## Aims
 
-To explore kubernetes secrets with a treasure hunt game in minikube.
+To explore kubernetes secrets & configmap.
 
 ## Pre-requisites
 
-Docker (https://docs.docker.com/install/) and minikube (https://kubernetes.io/docs/tasks/tools/install-minikube/) installed.
+Docker
+minikube
+helm
+triller
+kubectl
 
 ## How to Run In Minikube
 
 Start minikube:
  
-`minikube start --memory 4000 --cpus 3`
+`minikube start --vm-driver=none`
 
 Build image for minikube - from this directory run
 
 `eval $(minikube docker-env)` <br/>
-`docker build . -t treasurehunt`
+`docker build . -t demoapp`
 
 Deploy with
- 
-`kubectl create -f ./treasurehunt`
+
+`make help`  checkout the commands here
+`make run`
 
 First access from: 
 
-`minikube service treasurehunt-entrypoint`
+`make status`
+get the nodeport and add it in VM NAT 
 
 And play by going to e.g. `http://localhost:30080/treasure?x=1&y=1`
 
 Delete with
  
-`kubectl delete -f ./treasurehunt`
+`make delete`
 
 And stop with `minikube stop`
 
@@ -39,14 +45,14 @@ And stop with `minikube stop`
 
 As above but replace the `kubectl create` command with: 
 
-`helm install --name=pet-parrot ./charts/treasurehunt/`<br/>
+`make run (or) helm install --name=demoapp ./charts/demoapp/`<br/>
 
 Or to set the treasure location then instead:
 
- `helm install --name=pet-parrot  --set treasure.location.x=3,treasure.location.y=2 ./charts/treasurehunt/ `<br/>
+ `helm install --name=demoapp  --set treasure.location.x=3,treasure.location.y=2 ./charts/demoapp/ `<br/>
 
 And access with:
 
-`minikube service pet-parrot-treasurehunt`
+`minikube service demoapp`
 
-To remove use `helm del --purge pet-parrot`
+To remove use `helm del --purge demoapp` or make purge
