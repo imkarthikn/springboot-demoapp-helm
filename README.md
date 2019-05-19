@@ -6,10 +6,10 @@ To explore kubernetes secrets & configmap.
 
 ## Pre-requisites
 
-Docker
-minikube
-helm
-triller
+Docker /
+minikube /
+helm /
+triller /
 kubectl
 
 ## How to Run In Minikube
@@ -55,8 +55,8 @@ And access with:
 
 `minikube service demoapp`
 
-<<<<<<< HEAD
+
 To remove use `helm del --purge demoapp` or make purge
 =======
-To remove use `helm del --purge pet-parrot`
->>>>>>> bed3b85d437a226087bcc04825a3e992fccee2ef
+To remove use `helm del --purge demoapp`
+
