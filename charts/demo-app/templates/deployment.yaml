@@ -1,0 +1,74 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ template "demoapp.fullname" . }}
+  labels:
+    app: {{ template "demoapp.name" . }}
+    chart: {{ template "demoapp.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  minReadySeconds: {{ .Values.minReadySeconds }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: {{ .Values.maxUnavailable }}
+      maxSurge: {{ .Values.maxSurge }}
+  selector:
+    matchLabels:
+      app: {{ template "demoapp.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "demoapp.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          env:
+          - name: JAVA_OPTS
+            value: -Xmx64m -Xms64m
+          - name: TREASURE_LOCATION_X
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "demoapp.fullname" . }}-demoapp-secrets
+                key: treasure.location.x
+          - name: TREASURE_LOCATION_Y
+            valueFrom:
+              secretKeyRef:
+                name: {{ template "demoapp.fullname" . }}-demoapp-secrets
+                key: treasure.location.y
+          volumeMounts:
+          - name: application-config
+            mountPath: "/config"
+            readOnly: true
+      volumes:
+      - name: application-config
+        configMap:
+          name: {{ template "demoapp.fullname" . }}-demoapp-config
+          items:
+          - key: application.properties
+            path: application.properties
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
