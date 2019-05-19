@@ -1,4 +1,4 @@
-# Treasure Hunt
+# Helm Demo app
 
 ## Aims
 
@@ -55,4 +55,8 @@ And access with:
 
 `minikube service demoapp`
 
+<<<<<<< HEAD
 To remove use `helm del --purge demoapp` or make purge
+=======
+To remove use `helm del --purge pet-parrot`
+>>>>>>> bed3b85d437a226087bcc04825a3e992fccee2ef
