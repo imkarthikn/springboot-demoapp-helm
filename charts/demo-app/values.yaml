@@ -1,10 +1,10 @@
 
 app:
 image:
-  repository: demoapp
+  repository: imkarthikn/springboot-demoapp
   tag: latest
- # pullPolicy: IfNotPresent
-  pullPolicy: Never
+  pullPolicy: IfNotPresent
+  #pullPolicy: Never
 
 
 replicaCount: 3
