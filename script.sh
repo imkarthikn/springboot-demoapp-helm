@@ -122,6 +122,7 @@ if [ "${result}" -eq "0"  ]; then
 #fi
 else
    printf "minikube not started"
+   exit 1
 fi
 
 # Output debug logs
@@ -154,10 +155,15 @@ sleep 20
 make run
 sleep 10
 echo ".........................................................................................................k8 dashboard.........................................................................."
-helm install stable/kubernetes-dashboard --namespace kube-system --set service.type=NodePort --name dash
-
+#helm install stable/kubernetes-dashboard --namespace kube-system --set service.type=NodePort --name dash
+helm install stable/kubernetes-dashboard --namespace kube-system --name dash -f /usr/local/src/springboot-demoapp-helm/charts/values.yaml
 echo "\n ..............................................................................helm  application list......................................................................................\n "
 helm list
 
 
-echo ""
+
+a=`helm status demoapp | grep -a2 v1/Service | grep TCP | awk -F ":" '{print $2}' | awk '{print $1}'`
+b=`helm status dash | grep -a2 v1/Service | grep TCP | awk -F ":" '{print $2}' | awk '{print $1}'`
+
+echo "------------------------------>                    NAT PORT TO ACCESS THE APPLICATION is $a  ( configure it in VM network setting )            <------------------------------------------------------   "
+echo "------------------------------>                    NAT PORT TO ACCESS THE k8's Dashboard is $b  ( configure it in VM )            <------------------------------------------------------   "
