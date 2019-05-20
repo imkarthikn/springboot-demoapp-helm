@@ -1,7 +1,6 @@
 #!/bin/bash
-yum install ansible git wget -y
-yum install ansible elinks vim -y
-sudo setenforce 0
+yum install git wget -y
+yum install elinks vim -y
 yum install -y yum-utils vim telnet git wget
 yum install -y yum-utils vim telnet git wget
 wget https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
